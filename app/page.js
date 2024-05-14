@@ -1,5 +1,5 @@
 "use client";
-import ReactFlow, { useNodesState, useEdgesState, addEdge } from "reactflow";
+import ReactFlow, { useNodesState, useEdgesState, addEdge} from "reactflow";
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import TextNode from "./components/TextNode";
 import "reactflow/dist/style.css";
@@ -128,19 +128,21 @@ export default function Home() {
     }
   }, [reactFlowInstance, nodes, isNodeUnconnected]);
 
-  useEffect(() => {
+ const onRestore = useCallback(() => {
     const flow = JSON.parse(localStorage.getItem("flow-key"));
 
     if (flow) {
       setNodes(flow.nodes || []);
       setEdges(flow.edges || []);
     }
-  }, [setNodes]);
+  }, [setNodes , reactFlowInstance])
+
+
 
   return (
     <div>
       <nav className="bg-slate-100 h-16">
-        <Navbar onSave={onSave} />
+        <Navbar onSave={onSave}  onRestore={onRestore}/>
       </nav>
       <main className="flex min-h-screen flex-row  justify-between">
         <div style={{ width: "100vw", height: "100vh" }} ref={reactFlowWrapper}>
@@ -164,6 +166,7 @@ export default function Home() {
                 }))
               );
             }}
+            fitView
           />
         </div>
         <div className="border">

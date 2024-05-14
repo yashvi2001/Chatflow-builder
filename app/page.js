@@ -1,5 +1,5 @@
 "use client";
-import ReactFlow, { useNodesState, useEdgesState } from "reactflow";
+import ReactFlow, { useNodesState, useEdgesState, addEdge } from "reactflow";
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import TextNode from "./components/TextNode";
 import "reactflow/dist/style.css";
@@ -85,6 +85,14 @@ export default function Home() {
     setNodes((nds) => nds.concat(newNode));
   }, []);
 
+  const onConnect = useCallback(
+    (params) => {
+      console.log("Edge created: ", params);
+      setEdges((eds) => addEdge(params, eds));
+    },
+    [setEdges]
+  );
+
   return (
     <div>
       <nav className="bg-slate-100 h-16">
@@ -100,7 +108,17 @@ export default function Home() {
             nodeTypes={nodeTypes}
             onNodeClick={onNodeClick}
             onDragOver={onDragOver}
+            onConnect={onConnect}
             onDrop={onDrop}
+            onPaneClick={() => {
+              setSelectedNodes([]);
+              setNodes((nodes) =>
+                nodes.map((n) => ({
+                  ...n,
+                  selected: false,
+                }))
+              );
+            }}
           />
         </div>
         <div className="border">

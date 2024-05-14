@@ -4,7 +4,7 @@ import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import TextNode from "./components/TextNode";
 import "reactflow/dist/style.css";
 import SideBar from "./components/Sidebar";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 
 const initialNodes = [
   {

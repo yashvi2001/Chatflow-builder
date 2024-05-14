@@ -119,11 +119,11 @@ export default function Home() {
       const emptyTargetHandles = checkEmptyTargetHandles();
 
       if (nodes.length > 1 && (emptyTargetHandles > 1 || isNodeUnconnected())) {
-        alert("Error.");
+        alert("Error. There are more than one Nodes and more than one Node has empty target handles ");
       } else {
         const flow = reactFlowInstance.toObject();
         localStorage.setItem("flow-key", JSON.stringify(flow));
-        alert("Saved");
+        alert("Flow is Saved");
       }
     }
   }, [reactFlowInstance, nodes, isNodeUnconnected]);

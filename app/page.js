@@ -19,6 +19,7 @@ export default function Home() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNodes, setSelectedNodes] = useState([]);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [nodeName, setNodeName] = useState("");
   const reactFlowWrapper = useRef(null);
   let id = 0;
@@ -62,41 +63,84 @@ export default function Home() {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
-  const onDrop = useCallback((event) => {
-    event.preventDefault();
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-    const type = event.dataTransfer.getData("application/reactflow");
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData("application/reactflow");
 
-    if (typeof type === "undefined" || !type) {
-      return;
-    }
-
-    const position = {
-      x: event.clientX - reactFlowBounds.left,
-      y: event.clientY - reactFlowBounds.top,
-    };
-    const newNode = {
-      id: getId(),
-      type,
-      position,
-      data: { label: `${type}` },
-    };
-    setNodes((nds) => nds.concat(newNode));
-  }, []);
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
+      const position = reactFlowInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      const newNode = {
+        id: getId(),
+        type,
+        position,
+        data: { label: `${type}` },
+      };
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance]
+  );
 
   const onConnect = useCallback(
     (params) => {
-      console.log("Edge created: ", params);
       setEdges((eds) => addEdge(params, eds));
     },
     [setEdges]
   );
+  const checkEmptyTargetHandles = () => {
+    let emptyTargetHandles = 0;
+    edges.forEach((edge) => {
+      if (!edge.targetHandle) {
+        emptyTargetHandles++;
+      }
+    });
+    return emptyTargetHandles;
+  };
+  const isNodeUnconnected = useCallback(() => {
+    let unconnectedNodes = nodes.filter(
+      (node) =>
+        !edges.find(
+          (edge) => edge.source === node.id || edge.target === node.id
+        )
+    );
+
+    return unconnectedNodes.length > 0;
+  }, [nodes, edges]);
+
+  const onSave = useCallback(() => {
+    if (reactFlowInstance) {
+      const emptyTargetHandles = checkEmptyTargetHandles();
+
+      if (nodes.length > 1 && (emptyTargetHandles > 1 || isNodeUnconnected())) {
+        alert("Error.");
+      } else {
+        const flow = reactFlowInstance.toObject();
+        localStorage.setItem("flow-key", JSON.stringify(flow));
+        alert("Saved");
+      }
+    }
+  }, [reactFlowInstance, nodes, isNodeUnconnected]);
+
+  useEffect(() => {
+    const flow = JSON.parse(localStorage.getItem("flow-key"));
+
+    if (flow) {
+      setNodes(flow.nodes || []);
+      setEdges(flow.edges || []);
+    }
+  }, [setNodes]);
 
   return (
     <div>
       <nav className="bg-slate-100 h-16">
-        <Navbar />
+        <Navbar onSave={onSave} />
       </nav>
       <main className="flex min-h-screen flex-row  justify-between">
         <div style={{ width: "100vw", height: "100vh" }} ref={reactFlowWrapper}>
@@ -107,6 +151,7 @@ export default function Home() {
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
             onNodeClick={onNodeClick}
+            onInit={setReactFlowInstance}
             onDragOver={onDragOver}
             onConnect={onConnect}
             onDrop={onDrop}

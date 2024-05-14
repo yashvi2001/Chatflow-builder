@@ -10,9 +10,18 @@ const SideBar = ({ nodeName, setNodeName, selectedNode, setSelectedNodes }) => {
     <aside className="w-64">
       {selectedNode ? (
         <>
-          <div className="flex flex-col items-center border-y p-2  mb-3">
-            Message
+          <div className="flex flex-col items-start border-y p-2 mb-3">
+            <div className="flex items-center">
+              <img
+                src="assets/back.svg"
+                width={15}
+                height={15}
+                onClick={() => setSelectedNodes([])}
+              />
+              <span class="ml-5">Message</span>
+            </div>
           </div>
+
           <div className="p-3">
             <textarea
               type="text"
@@ -25,11 +34,13 @@ const SideBar = ({ nodeName, setNodeName, selectedNode, setSelectedNodes }) => {
       ) : (
         <div className="p-3">
           <div
-            className="border border-indigo-600 w-32 h-20 cursor-move rounded-lg text-center flex justify-center"
+            className="border border-indigo-600 w-32 h-20 cursor-move rounded-lg text-center text-indigo-700 text-sm flex-col flex items-center"
             draggable
             onDragStart={(event) => onDragStart(event)}
           >
-            Message
+            <div className="mt-3"></div>
+            <img src="assets/messages.svg" width={20} height={20} />
+            <div className="mt-1">Message</div>
           </div>
         </div>
       )}

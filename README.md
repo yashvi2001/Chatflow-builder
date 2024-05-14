@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Chatbot Flow Builder
+
+## Overview:
+
+Created a simple chat bot flow builder using nextjs and react flow
+
+## Features:
+
+1. **Text Node**
+    - Our flow builder currently supports only one type of message (i.e., Text Message).
+    - Multiple Text Nodes can exist within a single flow.
+    - Nodes are incorporated into the flow by dragging and dropping a Node from the Nodes Panel.
+2. **Nodes Panel**
+    - This panel houses all types of Nodes supported by our Flow Builder.
+    - Currently, there's only the Message Node, but the system should be designed to accommodate additional node types in the future, thus making this section extensible.
+3. **Edge**
+    - Connects two Nodes together.
+4. **Source Handle**
+    - Represents the source of a connecting edge.
+    - Only one edge can originate from a source handle.
+5. **Target Handle**
+    - Represents the target of a connecting edge.
+    - More than one edge can connect to a target handle.
+6. **Settings Panel**
+
+    - The Settings Panel replaces the Nodes Panel when a Node is selected.
+    - It contains a text field to edit the text of the selected Text Node.
+7. **Save Button**
+    - A button to save the flow.
+    
+
+## Technologies Used
+
+- **Next**: The project is built using the NextJS (React Framework)library, providing a component-based architecture for building user interfaces.
+- **Tailwind CSS**:  Tailwind is used for designing and styling the user interface components, ensuring a modern and visually appealing look and feel.
+- **React flow** : A customizable React component for building node-based datas and interactive datas in here we used it to build the chatflow
+
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to get the project up and running on your local machine:
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/yashvi2001/Bitespeed-task.git
+   ```
+
+   ## Install Dependencies
+
+2. **Navigate into the project directory and install the necessary dependencies using npm or yarn.**
 
 ```bash
-npm run dev
+cd Bitespeed-task
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  ##  Run the Application
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. **Start the development server to run the application locally.**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm start
+# or
+yarn start
+```
+## Open in Browser
 
-## Learn More
+Open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+    
+## Acknowledgements
 
-To learn more about Next.js, take a look at the following resources:
+*   [Tailwind CSS](https://tailwindcss.com/): For providing the UI components and styling.
+*   [Next](https://nextjs.org/): For the powerful React Framework for building user interfaces.
+*   [React Flow](https://reactflow.dev/) : A customizable React component for building node-based editors and interactive diagrams
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
